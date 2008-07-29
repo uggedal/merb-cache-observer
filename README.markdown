@@ -1,4 +1,4 @@
-merb_cache_observer
+Merb cache observer
 ===================
 
 A plugin for the Merb framework that provides easy integration of model
