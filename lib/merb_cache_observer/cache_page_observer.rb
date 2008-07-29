@@ -34,9 +34,7 @@ module Merb::Cache::Observer::ControllerClassMethods
     actions_and_models.each do |action_and_model|
       action = action_and_model.shift
       action_and_model.each do |model|
-        observer = Merb::Cache::Observer.add_page_observer(model,
-                                                           self.new({}),
-                                                           action)
+        Merb::Cache::Observer.add_page_observer(model, self.new({}), action)
       end
     end
     true
