@@ -60,4 +60,16 @@ describe Merb::Cache::Observer, 'for pages' do
     c = get('/people/show')
     PeopleController.cached_page?('show').should be_true
   end
+
+  it 'should not fall on its knees with some havy observation usage' do
+    before = Time.now
+    class People
+      100.times do
+        observe_page :index, Person
+      end
+    end
+    before.should < (Time.now + 1)
+
+    PeopleController._observer.page_observers.size.should > 100
+  end
 end
