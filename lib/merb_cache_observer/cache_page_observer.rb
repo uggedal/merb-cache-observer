@@ -1,7 +1,3 @@
-require 'rubygems'
-require 'merb-core'
-require 'merb-cache'
-
 class Merb::Cache::Observer
   cattr_accessor :page_observers
   self.page_observers = []
