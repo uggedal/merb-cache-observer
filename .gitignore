@@ -1,2 +1,3 @@
 log/*
 spec/tmp/*
+.*.swp
