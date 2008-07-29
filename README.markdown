@@ -13,17 +13,17 @@ people in the system. The show page lists detailed account information
 for any person. We then want to invalidate the page cache for the index page
 when the person model is changed.
 
-class People < Merb::Controller
-  cache_pages :index, :show
-  observe_pages [:index, Person], [:show, Person, Account]
-end
+    class People < Merb::Controller
+      cache_pages :index, :show
+      observe_pages [:index, Person], [:show, Person, Account]
+    end
 
 There is also a singular counterpart to cache_page:
 
-class Entries < Merb::Controller
-  cache_page :index
-  observe_page :index, Entry, Comment
-end
+    class Entries < Merb::Controller
+      cache_page :index
+      observe_page :index, Entry, Comment
+    end
 
 
 [1]: http://nutrun.com/weblog/cache-watch/
