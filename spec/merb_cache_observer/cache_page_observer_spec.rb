@@ -9,6 +9,8 @@ describe Merb::Cache::Observer, 'for pages' do
     @person = Person.new(:name => 'Tom')
     @entry = Entry.new(:title => 'Blog post')
     @comment = Comment.new(:message => 'Nice blog post!')
+
+    @page_observers = PeopleController._observer.page_observers
   end
 
   it 'should provide an array of all page observers' do
@@ -62,6 +64,14 @@ describe Merb::Cache::Observer, 'for pages' do
   end
 
   it 'should be able to observe many models with the same observer' do
-    PeopleController._observer.page_observers.size.should == 3
+    @page_observers.size.should == 3
+  end
+
+  it 'should store information on what action are observed' do
+    @page_observers.first[:action].should == :index
+  end
+
+  it 'should store information on what models are observed' do
+    @page_observers.last[:models].should == [Entry, Comment]
   end
 end

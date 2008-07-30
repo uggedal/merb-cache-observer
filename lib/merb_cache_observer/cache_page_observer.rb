@@ -16,7 +16,9 @@ class Merb::Cache::Observer
         controller.expire_page(:action => action)
       end
     end
-    self.page_observers << observer
+    self.page_observers << { :models => models,
+                             :action => action,
+                             :observer => observer }
   end
 end
 
