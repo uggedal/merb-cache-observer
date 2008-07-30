@@ -86,4 +86,12 @@ describe Merb::Cache::Observer, 'for pages' do
     PeopleController._page_observers.size.should == 2
     PeopleController._page_observers[:index][:models].should == [Person, Entry]
   end
+
+  it 'should keep the observeable models unique on changes' do
+    EntriesController._page_observers[:index][:models].should == [Entry, Comment]
+    class Entries
+      observe_page :index, Entry
+    end
+    EntriesController._page_observers[:index][:models].should == [Entry, Comment]
+  end
 end

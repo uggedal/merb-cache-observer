@@ -5,7 +5,7 @@ class Merb::Cache::Observer
   def self.add_page_observer(models, controller, action)
 
     if controller._page_observer? action
-      models = controller._page_observers[action][:models] + models
+      models = controller._page_observers[action][:models] | models
     end
 
     observer = Class.new do
