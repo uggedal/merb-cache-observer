@@ -1,8 +1,10 @@
 class Merb::Cache::Observer
   cattr_accessor :page_observers
-  self.page_observers = []
+  self.page_observers = {}
 
   def self.add_page_observer(models, controller, action)
+    self.page_observers[controller.controller_name] ||= {}
+
     observer = Class.new do
       include DataMapper::Observer
 
@@ -16,9 +18,8 @@ class Merb::Cache::Observer
         controller.expire_page(:action => action)
       end
     end
-    self.page_observers << { :models => models,
-                             :action => action,
-                             :observer => observer }
+    meta = { :models => models, :observer => observer }
+    self.page_observers[controller.controller_name][action] = meta
   end
 end
 

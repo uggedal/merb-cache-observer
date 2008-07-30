@@ -13,9 +13,9 @@ describe Merb::Cache::Observer, 'for pages' do
     @page_observers = PeopleController._observer.page_observers
   end
 
-  it 'should provide an array of all page observers' do
+  it 'should provide a hash of all page observers' do
     page_observers = Merb::Cache::Observer.page_observers
-    page_observers.should be_instance_of(Array)
+    page_observers.should be_instance_of(Hash)
   end
 
   it 'should expire a page cache on save for an observed model' do
@@ -64,14 +64,16 @@ describe Merb::Cache::Observer, 'for pages' do
   end
 
   it 'should be able to observe many models with the same observer' do
-    @page_observers.size.should == 3
+    @page_observers['people'].size.should == 2
+    @page_observers['entries'].size.should == 1
   end
 
   it 'should store information on what action are observed' do
-    @page_observers.first[:action].should == :index
+    @page_observers['people'].keys.should be_include(:index)
+    @page_observers['people'].keys.should be_include(:show)
   end
 
   it 'should store information on what models are observed' do
-    @page_observers.last[:models].should == [Entry, Comment]
+    @page_observers['entries'][:index][:models].should == [Entry, Comment]
   end
 end
