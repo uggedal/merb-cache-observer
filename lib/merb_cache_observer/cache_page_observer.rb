@@ -28,8 +28,7 @@ module Merb::Cache::Observer::ControllerClassMethods
 
   def observe_pages(*actions_and_models)
     actions_and_models.each do |action_and_model|
-      action = action_and_model.shift
-      models = action_and_model
+      action, models = action_and_model.shift, action_and_model
 
       Merb::Cache::Observer.add_page_observer(models, self.new({}), action)
     end
