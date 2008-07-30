@@ -76,4 +76,14 @@ describe Merb::Cache::Observer, 'for pages' do
   it 'should store information on what models are observed' do
     @page_observers['entries'][:index][:models].should == [Entry, Comment]
   end
+
+  it 'should only allow one observer for each method' do
+    @page_observers['people'].size.should == 2
+    @page_observers['people'][:index][:models].should == [Person]
+    class People
+      observe_page :index, Entry
+    end
+    @page_observers['people'].size.should == 2
+    @page_observers['people'][:index][:models].should == [Person, Entry]
+  end
 end

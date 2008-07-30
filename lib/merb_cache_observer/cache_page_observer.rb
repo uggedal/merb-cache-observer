@@ -5,6 +5,11 @@ class Merb::Cache::Observer
   def self.add_page_observer(models, controller, action)
     self.page_observers[controller.controller_name] ||= {}
 
+    if self.page_observers[controller.controller_name].key? action
+      pre = self.page_observers[controller.controller_name][action][:models]
+      models = pre + models
+    end
+
     observer = Class.new do
       include DataMapper::Observer
 
