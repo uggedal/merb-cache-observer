@@ -94,4 +94,15 @@ describe Merb::Cache::Observer, 'for pages' do
     end
     EntriesController._page_observers[:index][:models].should == [Entry, Comment]
   end
+
+  it 'should destruct updated observer classes' do
+    before = Time.now
+    100.times do
+      class People
+        observe_page :index, Entry
+      end
+    end
+    after = Time.now
+    after.should <= (before + 1)
+  end
 end
