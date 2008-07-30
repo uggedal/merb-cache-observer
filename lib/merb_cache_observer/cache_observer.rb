@@ -8,6 +8,8 @@ module Merb
     cattr_reader :_observer
     @@_observer = Merb::Cache::Observer.new
 
+    include Merb::Cache::Observer::ControllerInstanceMethods
+
     class << self
       include Merb::Cache::Observer::ControllerClassMethods
     end

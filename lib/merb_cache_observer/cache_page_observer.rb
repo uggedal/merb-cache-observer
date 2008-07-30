@@ -3,11 +3,9 @@ class Merb::Cache::Observer
   self.page_observers = {}
 
   def self.add_page_observer(models, controller, action)
-    self.page_observers[controller.controller_name] ||= {}
 
-    if self.page_observers[controller.controller_name].key? action
-      pre = self.page_observers[controller.controller_name][action][:models]
-      models = pre + models
+    if controller._page_observer? action
+      models = controller._page_observers[action][:models] + models
     end
 
     observer = Class.new do
@@ -23,8 +21,8 @@ class Merb::Cache::Observer
         controller.expire_page(:action => action)
       end
     end
-    meta = { :models => models, :observer => observer }
-    self.page_observers[controller.controller_name][action] = meta
+    controller._page_observers[action] = { :models => models,
+                                           :observer => observer }
   end
 end
 
@@ -41,5 +39,16 @@ module Merb::Cache::Observer::ControllerClassMethods
       Merb::Cache::Observer.add_page_observer(models, self.new({}), action)
     end
     true
+  end
+end
+
+module Merb::Cache::Observer::ControllerInstanceMethods
+
+  def _page_observers
+    self._observer.page_observers[controller_name] ||= {}
+  end
+
+  def _page_observer?(action)
+    _page_observers.key? action
   end
 end

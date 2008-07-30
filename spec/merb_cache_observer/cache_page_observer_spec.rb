@@ -64,13 +64,13 @@ describe Merb::Cache::Observer, 'for pages' do
   end
 
   it 'should be able to observe many models with the same observer' do
-    @page_observers['people'].size.should == 2
+    PeopleController._page_observers.size.should == 2
     @page_observers['entries'].size.should == 1
   end
 
   it 'should store information on what action are observed' do
-    @page_observers['people'].keys.should be_include(:index)
-    @page_observers['people'].keys.should be_include(:show)
+    PeopleController._page_observers.keys.should be_include(:index)
+    PeopleController._page_observers.keys.should be_include(:show)
   end
 
   it 'should store information on what models are observed' do
@@ -78,12 +78,12 @@ describe Merb::Cache::Observer, 'for pages' do
   end
 
   it 'should only allow one observer for each method' do
-    @page_observers['people'].size.should == 2
-    @page_observers['people'][:index][:models].should == [Person]
+    PeopleController._page_observers.size.should == 2
+    PeopleController._page_observers[:index][:models].should == [Person]
     class People
       observe_page :index, Entry
     end
-    @page_observers['people'].size.should == 2
-    @page_observers['people'][:index][:models].should == [Person, Entry]
+    PeopleController._page_observers.size.should == 2
+    PeopleController._page_observers[:index][:models].should == [Person, Entry]
   end
 end
